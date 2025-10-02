@@ -1,4 +1,4 @@
-# ![Licencia](https://img.shields.io/badge/licencia-TheQAHub-green)
+![Licencia](https://img.shields.io/badge/licencia-TheQAHub-green)
 ![Playwright](https://img.shields.io/badge/playwright-v1.55.1-blue)
 ![Versión](https://img.shields.io/badge/version-Octubre_2025-yellowgreen)
 
