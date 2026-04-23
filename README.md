@@ -11,27 +11,19 @@ Este repositorio contiene todos los archivos y ejemplos utilizados en los vídeo
 ## 📁 Estructura del Proyecto
 
 ```bash
-/primerVideo/
- ├── node_modules/          # Dependencias instaladas con npm
- ├── playwright-report/     # Reportes HTML generados tras la ejecución
- ├── test-results/          # Archivos temporales y trazas de ejecución
- ├── tests/                 # Carpeta de pruebas
- │   ├── example.spec.js
- │   └── testGrabadoCodegen.spec.js
- ├── package-lock.json
- ├── package.json
- ├── playwright.config.js   # Configuración principal de Playwright
- └── README.md
+/locators/                  # Ejemplos de localizadores, UI y e2e
+/playwright-docs-es/        # Laboratorio por apartados oficiales de Playwright Docs
+/primerVideo/               # Material histórico de la serie (no documentado aquí)
+/README.md
 ```
 
 ---
 
 ## 📌 Contenido de los Ejemplos
 
-- **`example.spec.js`** – Ejemplo inicial de prueba con Playwright Test.  
-- **`testGrabadoCodegen.spec.js`** – Prueba generada automáticamente con el recorder de Playwright.  
-
-Cada archivo está explicado en los vídeos del canal, mostrando buenas prácticas de automatización, configuración y reportes.
+- **`locators/`**: ejemplos prácticos de selectores, interacciones y assertions.
+- **`playwright-docs-es/`**: contenido estructurado por secciones oficiales (configuración, fixtures, retries, sharding, reporters, UI mode, etc.).
+- Incluye ejemplos ejecutables tanto por terminal como en interfaz gráfica de Playwright.
 
 ---
 
@@ -58,14 +50,17 @@ npm init playwright@latest
 Desde la raíz del proyecto:
 
 ```bash
-# Ejecutar todos los tests
+# Ejemplo: ejecutar el bloque de locators
+cd locators
+npm install
 npx playwright test
 
-# Ejecutar un archivo específico
-npx playwright test tests/example.spec.js
-
-# Generar reporte HTML
-npx playwright show-report
+# Ejemplo: ejecutar el laboratorio por apartados docs
+cd ../playwright-docs-es
+npm install
+npx playwright install
+npx playwright test
+npx playwright test --ui
 ```
 
 ---

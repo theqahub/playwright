@@ -1,0 +1,8 @@
+- generic [active] [ref=e1]:
+  - heading "Todos" [level=1] [ref=e2]
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - text: Nueva tarea
+      - textbox "Nueva tarea" [ref=e5]
+    - button "Agregar" [ref=e6]
+  - list
