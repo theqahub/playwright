@@ -4,27 +4,18 @@
 
 import { test, expect } from '@playwright/test';
 
-test.describe('Gestión de Tareas', () => {
-  test('Crear varias tareas [PRIORIDAD: ALTA] [RIESGO: Verifica que el sistema maneja múltiples tareas correctamente]', async ({ page }) => {
-    // 1. Agregar tres tareas ('Tarea uno', 'Tarea dos', 'Tarea tres') y verificar que las 3 aparecen en la lista
-    await page.goto('https://demo.playwright.dev/todomvc/#/');
-    const input = page.getByPlaceholder('What needs to be done?');
+test.describe('Add/Remove Elements', () => {
+  test('Crear varios elementos [PRIORIDAD: ALTA] [RIESGO: Verifica repeticiones de la accion principal]', async ({ page }) => {
+    await page.goto('/add_remove_elements/');
+    const addButton = page.getByRole('button', { name: 'Add Element' });
 
-    await input.fill('Tarea uno');
-    await input.press('Enter');
-    await input.fill('Tarea dos');
-    await input.press('Enter');
-    await input.fill('Tarea tres');
-    await input.press('Enter');
+    await addButton.click();
+    await addButton.click();
+    await addButton.click();
 
-    // Verificar que las tareas aparecen en la lista
-    await expect(page.locator('.todo-list li').filter({ hasText: 'Tarea uno' })).toBeVisible();
-    await expect(page.locator('.todo-list li').filter({ hasText: 'Tarea dos' })).toBeVisible();
-    await expect(page.locator('.todo-list li').filter({ hasText: 'Tarea tres' })).toBeVisible();
-
-    // 2. Verificar que 'Tarea uno' aparece primero y 'Tarea tres' aparece última
-    const listaTareas = page.locator('.todo-list li');
-    await expect(listaTareas.first()).toHaveText('Tarea uno');
-    await expect(listaTareas.last()).toHaveText('Tarea tres');
+    const deleteButtons = page.getByRole('button', { name: 'Delete' });
+    await expect(deleteButtons).toHaveCount(3);
+    await expect(deleteButtons.first()).toBeVisible();
+    await expect(deleteButtons.last()).toBeVisible();
   });
 });

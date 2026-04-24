@@ -4,19 +4,13 @@
 
 import { test, expect } from '@playwright/test';
 
-test.describe('Gestión de Tareas', () => {
-  test('Crear una tarea [PRIORIDAD: ALTA] [RIESGO: Funcionalidad crítica - si falla, no se pueden crear tareas]', async ({ page }) => {
-    // 1. Navegar a https://demo.playwright.dev/todomvc/#/ y verificar que el campo de texto es visible
-    await page.goto('https://demo.playwright.dev/todomvc/#/');
-    const input = page.getByPlaceholder('What needs to be done?');
-    await expect(input).toBeVisible();
+test.describe('Add/Remove Elements', () => {
+  test('Crear un elemento [PRIORIDAD: ALTA] [RIESGO: Acción principal de la demo]', async ({ page }) => {
+    await page.goto('/add_remove_elements/');
+    const addButton = page.getByRole('button', { name: 'Add Element' });
+    await expect(addButton).toBeVisible();
 
-    // 2. Escribir 'Comprar leche' en el campo de texto, presionar Enter, y verificar que la tarea aparece en la lista
-    await input.fill('Comprar leche');
-    await input.press('Enter');
-    await expect(page.locator('ul li').filter({ hasText: 'Comprar leche' })).toBeVisible();
-
-    // 3. Verificar que el campo de texto está vacío después de agregar la tarea
-    await expect(input).toHaveValue('');
+    await addButton.click();
+    await expect(page.getByRole('button', { name: 'Delete' })).toBeVisible();
   });
 });

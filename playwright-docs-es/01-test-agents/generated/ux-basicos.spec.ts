@@ -5,16 +5,12 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('UX y Accesibilidad', () => {
-  test('Casos de UX básicos [PRIORIDAD: MEDIA] [RIESGO: Importante para accesibilidad y experiencia de usuario]', async ({ page }) => {
-    // 1. Navegar a https://demo.playwright.dev/todomvc/#/ y verificar que el campo de texto es visible
-    await page.goto('https://demo.playwright.dev/todomvc/#/');
-    const input = page.getByPlaceholder('What needs to be done?');
-    await expect(input).toBeVisible();
+  test('Casos de UX basicos [PRIORIDAD: MEDIA] [RIESGO: Importante para accesibilidad y feedback visual]', async ({ page }) => {
+    await page.goto('/add_remove_elements/');
+    const addButton = page.getByRole('button', { name: 'Add Element' });
 
-    // 2. Verificar que el campo de texto está habilitado
-    await expect(input).toBeEnabled();
-
-    // 3. Verificar que el heading 'todos' está presente en la página
-    await expect(page.getByRole('heading', { name: 'todos' })).toBeVisible();
+    await expect(addButton).toBeVisible();
+    await expect(addButton).toBeEnabled();
+    await expect(page.getByRole('heading', { name: 'Add/Remove Elements' })).toBeVisible();
   });
 });

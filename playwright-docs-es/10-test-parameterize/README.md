@@ -1,38 +1,30 @@
 # 10 - Parameterize Tests
 
 ## Para que sirve
-Evita duplicacion al ejecutar misma logica con distintos datos.
+Evita duplicacion al ejecutar la misma logica con distintos datos.
+
+## En este laboratorio
+
+La parametrizacion se apoya en varias paginas de `the-internet`:
+- `/status_codes/200`
+- `/status_codes/301`
+- `/status_codes/404`
+- `/status_codes/500`
 
 ## Patron comun
 ```ts
 import { test, expect } from '@playwright/test';
 
-const users = [
-  { role: 'admin', path: '/admin' },
-  { role: 'editor', path: '/editor' },
-  { role: 'viewer', path: '/viewer' },
+const statusCodes = [
+  { code: '200', path: '/status_codes/200' },
+  { code: '301', path: '/status_codes/301' },
+  { code: '404', path: '/status_codes/404' },
 ];
 
-for (const user of users) {
-  test(`acceso correcto para ${user.role}`, async ({ page }) => {
-    // Arrange: preparar estado del rol
-    await page.goto(user.path);
-
-    // Assert: validar area visible
-    await expect(page.getByRole('heading')).toContainText(user.role);
+for (const item of statusCodes) {
+  test(`status code ${item.code}`, async ({ page }) => {
+    await page.goto(item.path);
+    await expect(page.locator('#content')).toContainText(item.code);
   });
 }
 ```
-
-## Variantes
-- Matrices de datos simples.
-- Generacion dinamica por entorno.
-- Parametrizacion por `describe`.
-
-## Buenas practicas
-- Nombres de test claros con el dato parametrizado.
-- No mezclar demasiadas dimensiones en una sola matriz.
-
-## Checklist
-- [ ] Eliminaste duplicados obvios.
-- [ ] Titulos de casos identifican dato de entrada.

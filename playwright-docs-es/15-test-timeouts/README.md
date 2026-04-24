@@ -4,33 +4,20 @@
 - timeout de test,
 - timeout de expect,
 - timeout de hooks,
-- timeout de acciones/navegacion.
+- timeout de acciones y navegacion.
 
-## Config global
-```ts
-import { defineConfig } from '@playwright/test';
+## En este laboratorio
 
-export default defineConfig({
-  timeout: 30_000,
-  expect: { timeout: 5_000 },
-});
-```
+Usamos `/dynamic_loading/2` de `the-internet.herokuapp.com` para tener una espera realista sin depender de una app local.
 
 ## Ajuste por test
 ```ts
 import { test, expect } from '@playwright/test';
 
-test('proceso pesado de exportacion', async ({ page }) => {
-  test.setTimeout(90_000); // Caso puntual mas lento
-  await page.goto('/exports');
-  await expect(page.getByText('Completado')).toBeVisible();
+test('dynamic loading mas lento', async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.goto('/dynamic_loading/2');
+  await page.getByRole('button', { name: 'Start' }).click();
+  await expect(page.getByText('Hello World!')).toBeVisible();
 });
 ```
-
-## Buenas practicas
-- Subir timeout solo en casos justificados.
-- Investigar lentitud antes de inflar tiempos.
-
-## Checklist
-- [ ] `expect.timeout` razonable y consistente.
-- [ ] No hay timeouts inflados sin motivo.

@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-test('webServer levanta app antes de ejecutar', async ({ request, page }) => {
-  const health = await request.get('/health');
-  expect(health.ok()).toBeTruthy();
+test('sitio remoto accesible antes de ejecutar', async ({ request, page }) => {
+  const home = await request.get('/');
+  expect(home.ok()).toBeTruthy();
 
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Laboratorio Playwright' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Welcome to the-internet' })).toBeVisible();
 });

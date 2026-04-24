@@ -1,15 +1,15 @@
 # Prompt sugerido para Planner Agent
 
-Objetivo: generar plan de pruebas para la mini app de tareas (`/todos`) existente en https://demo.playwright.dev/todomvc/#/.
+Objetivo: generar un plan de pruebas para `https://the-internet.herokuapp.com/add_remove_elements/`.
 
 Cobertura esperada:
-1. Crear tarea.
-2. Crear varias tareas.
-3. Validar que no agrega vacios.
+1. Crear un elemento.
+2. Crear varios elementos.
+3. Validar estado inicial sin elementos.
 4. Verificar comportamiento tras recarga.
-5. Casos de UX basicos (input visible, boton accesible).
+5. Casos de UX basicos.
 
 Salida esperada:
-- Archivo Markdown con casos positivos/negativos,
-- prioridad de escenarios,
-- notas de riesgo.
+- Archivo Markdown con casos positivos y negativos.
+- Priorizacion de escenarios.
+- Notas de riesgo y estabilidad.

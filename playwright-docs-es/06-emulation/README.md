@@ -9,22 +9,9 @@ Simular condiciones reales de usuario:
 - color scheme,
 - idioma.
 
-## Ejemplo con dispositivos
-```ts
-import { defineConfig, devices } from '@playwright/test';
+## En este laboratorio
 
-export default defineConfig({
-  projects: [
-    {
-      name: 'mobile-chrome',
-      use: {
-        ...devices['Pixel 7'], // Emula viewport + UA + tactil
-        locale: 'es-ES',
-      },
-    },
-  ],
-});
-```
+La pildora usa `the-internet.herokuapp.com`, concretamente paginas como `/geolocation`, para enseñar emulacion sobre una web real en lugar de una app local inventada.
 
 ## Ejemplo de geolocalizacion
 ```ts
@@ -35,16 +22,11 @@ test.use({
   geolocation: { latitude: 40.4168, longitude: -3.7038 },
 });
 
-test('muestra tiendas cercanas en Madrid', async ({ page }) => {
-  await page.goto('/tiendas');
-  await expect(page.getByText('Madrid')).toBeVisible();
+test('coordenadas simuladas de Madrid', async ({ page }) => {
+  await page.goto('/geolocation');
+  const coords = await page.evaluate(() =>
+    new Promise(resolve => navigator.geolocation.getCurrentPosition(pos => resolve(pos.coords))),
+  );
+  expect(coords.latitude).toBeCloseTo(40.4168, 3);
 });
 ```
-
-## Riesgos habituales
-- Mezclar emulacion de movil con selectores pensados para desktop.
-- No fijar `timezoneId` al validar fechas.
-
-## Checklist
-- [ ] Casos criticos cubiertos en movil y desktop.
-- [ ] Pruebas sensibles a locale/timezone estan controladas.

@@ -6,6 +6,6 @@ test('reporters: caso con steps', async ({ page }) => {
   });
 
   await test.step('Verificar heading principal', async () => {
-    await expect(page.getByRole('heading', { name: 'Laboratorio Playwright' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Welcome to the-internet' })).toBeVisible();
   });
 });

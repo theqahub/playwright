@@ -1,9 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-// Seed test pensado para usar con agentes (planner/generator/healer).
-test('seed: flujo base de todos', async ({ page }) => {
-  await page.goto('/todos');
-  await page.getByLabel('Nueva tarea').fill('grabar episodio de Playwright');
-  await page.getByRole('button', { name: 'Agregar' }).click();
-  await expect(page.getByText('grabar episodio de Playwright')).toBeVisible();
+test('seed: flujo base de add/remove elements', async ({ page }) => {
+  await page.goto('/add_remove_elements/');
+  await page.getByRole('button', { name: 'Add Element' }).click();
+  await expect(page.getByRole('button', { name: 'Delete' })).toBeVisible();
 });

@@ -1,76 +1,58 @@
-# Plan de Pruebas - TodoMVC
+# Plan de Pruebas - Add/Remove Elements
 
 ## Application Overview
 
-Plan de pruebas para la mini app de tareas existente en https://demo.playwright.dev/todomvc/#/. La aplicación permite crear, visualizar y gestionar tareas pendientes.
+Plan de pruebas para `https://the-internet.herokuapp.com/add_remove_elements/`. La pagina permite crear botones `Delete` de forma dinamica y eliminarlos.
 
 ## Test Scenarios
 
-### 1. Gestión de Tareas
+### 1. Gestion basica de elementos
 
 **Seed:** `01-test-agents/seed.spec.ts`
 
-#### 1.1. Crear una tarea [PRIORIDAD: ALTA] [RIESGO: Funcionalidad crítica - si falla, no se pueden crear tareas]
+#### 1.1. Crear un elemento [PRIORIDAD: ALTA] [RIESGO: Funcionalidad principal]
 
 **File:** `01-test-agents/generated/crear-tarea.spec.ts`
 
 **Steps:**
-  1. Navegar a http://127.0.0.1:3100/todos y verificar que el campo de texto 'Nueva tarea' y el botón 'Agregar' son visibles y accesibles
-    - expect: El campo de texto está visible y habilitado
-    - expect: El botón 'Agregar' está visible y habilitado
-  2. Escribir 'Comprar leche' en el campo de texto, hacer clic en el botón 'Agregar' o presionar Enter, y verificar que la tarea aparece en la lista
-    - expect: La tarea 'Comprar leche' aparece en la lista de tareas
-  3. Verificar que el campo de texto está vacío después de agregar la tarea
-    - expect: El campo de texto se limpia después de agregar la tarea
+1. Navegar a `/add_remove_elements/` y verificar que `Add Element` es visible
+2. Hacer click en `Add Element`
+3. Verificar que aparece un boton `Delete`
 
-#### 1.2. Crear varias tareas [PRIORIDAD: ALTA] [RIESGO: Verifica que el sistema maneja múltiples tareas correctamente]
+#### 1.2. Crear varios elementos [PRIORIDAD: ALTA] [RIESGO: Repeticion de la accion principal]
 
 **File:** `01-test-agents/generated/crear-varias-tareas.spec.ts`
 
 **Steps:**
-  1. Agregar tres tareas ('Tarea uno', 'Tarea dos', 'Tarea tres') y verificar que las 3 aparecen en la lista
-    - expect: Todas las tareas aparecen en la lista
-  2. Verificar que 'Tarea uno' aparece primero y 'Tarea tres' aparece última
-    - expect: Las tareas mantienen su orden de creación
+1. Pulsar `Add Element` tres veces
+2. Verificar que existen tres botones `Delete`
 
-#### 1.3. Validar que no agrega tareas vacías [PRIORIDAD: MEDIA] [RIESGO: Validación importante para evitar datos corruptos]
+#### 1.3. Estado inicial sin elementos [PRIORIDAD: MEDIA] [RIESGO: Estado base incorrecto]
 
 **File:** `01-test-agents/generated/tareas-vacias.spec.ts`
 
 **Steps:**
-  1. Limpiar el campo de texto, intentar agregar una tarea vacía (solo espacios), y verificar que la lista de tareas no cambia
-    - expect: No se agrega ninguna tarea
-  2. Verificar que el campo de texto está vacío después del intento
-    - expect: El campo de texto permanece vacío
-  3. Verificar que no hay mensajes de error visibles
-    - expect: No se muestra mensaje de error
+1. Navegar a `/add_remove_elements/`
+2. Verificar que no existe ningun boton `Delete`
 
-#### 1.4. Verificar comportamiento tras recarga [PRIORIDAD: BAJA] [RIESGO: La aplicación NO persiste datos - comportamiento esperado]
+#### 1.4. Comportamiento tras recarga [PRIORIDAD: BAJA] [RIESGO: Aclarar persistencia]
 
 **File:** `01-test-agents/generated/persistencia.spec.ts`
 
 **Steps:**
-  1. Navegar a http://127.0.0.1:3100/todos, agregar una tarea de prueba, y recargar la página
-    - expect: La página carga correctamente
-  2. Verificar que las tareas agregadas siguen visibles. NOTA: Las tareas NO persisten tras recarga (sin localStorage)
-    - expect: Las tareas persisten después de la recarga
-  3. Verificar que el campo de texto está visible y habilitado después de la recarga
-    - expect: El estado de la aplicación es correcto
+1. Crear un elemento
+2. Recargar la pagina
+3. Verificar que el estado vuelve a estar limpio
 
-### 2. UX y Accesibilidad
+### 2. UX basica
 
 **Seed:** `01-test-agents/seed.spec.ts`
 
-#### 2.1. Casos de UX básicos [PRIORIDAD: MEDIA] [RIESGO: Importante para accesibilidad y experiencia de usuario]
+#### 2.1. Visibilidad y accesibilidad del CTA [PRIORIDAD: MEDIA] [RIESGO: Mala señal de salud de la pagina]
 
 **File:** `01-test-agents/generated/ux-basicos.spec.ts`
 
 **Steps:**
-  1. Navegar a http://127.0.0.1:3100/todos y verificar que el campo de texto 'Nueva tarea' tiene offsetParent no nulo
-    - expect: El campo de texto es visible
-  2. Verificar que el campo de texto no está deshabilitado (disabled: false)
-    - expect: El campo de texto está habilitado
-  3. Verificar que el botón existe, es visible y no está deshabilitado
-    - expect: El botón 'Agregar' es accesible
-  4. Verificar que el heading 'Todos' está presente en la página
-    - expect: El título 'Todos' es visible
+1. Verificar que `Add Element` es visible
+2. Verificar que `Add Element` esta habilitado
+3. Verificar que el heading `Add/Remove Elements` es visible

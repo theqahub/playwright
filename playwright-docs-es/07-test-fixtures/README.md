@@ -1,48 +1,25 @@
 # 07 - Test Fixtures
 
 ## Idea principal
-Fixtures crean entorno aislado por test y permiten setup/teardown elegante.
+Fixtures crean entorno aislado por test y permiten setup y teardown elegante.
 
-## Built-in fixtures mas usadas
-- `page`
-- `context`
-- `browser`
-- `request`
-- `browserName`
+## En este laboratorio
 
-## Fixture personalizada (ejemplo)
+La fixture personalizada hace login en `https://the-internet.herokuapp.com/login` con el usuario de ejemplo `tomsmith` y deja el test en `/secure`.
+
+## Fixture personalizada
 ```ts
-import { test as base } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 
-type MyFixtures = {
-  authenticatedPage: void;
-};
-
-export const test = base.extend<MyFixtures>({
+export const test = base.extend({
   authenticatedPage: async ({ page }, use) => {
-    // Setup: login previo para cada test que use esta fixture
     await page.goto('/login');
-    await page.fill('[name=email]', 'qa@example.com');
-    await page.fill('[name=password]', 'secret');
-    await page.click('button[type=submit]');
+    await page.getByLabel('Username').fill('tomsmith');
+    await page.getByLabel('Password').fill('SuperSecretPassword!');
+    await page.getByRole('button', { name: 'Login' }).click();
+    await expect(page.getByRole('heading', { name: 'Secure Area', exact: true })).toBeVisible();
 
-    await use();
-
-    // Teardown: limpieza opcional
-    await page.context().clearCookies();
+    await use(page);
   },
 });
 ```
-
-## Ventajas frente a hooks clasicos
-- Reutilizacion entre archivos.
-- Composicion de fixtures.
-- Solo se inicializa lo que el test necesita.
-
-## Buenas practicas
-- Fixtures pequenas y con responsabilidad unica.
-- Evitar fixtures con demasiada logica de negocio.
-
-## Checklist
-- [ ] Existe capa de fixtures compartidas.
-- [ ] Setup/teardown no duplicado en cada spec.

@@ -2,11 +2,26 @@ import { defineConfig, devices } from '@playwright/test';
 
 const fullMatrix = process.env.FULL_MATRIX === '1';
 
-const matrixProjects = fullMatrix
+const extraProjects = fullMatrix
   ? [
-      { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-      { name: 'webkit', use: { ...devices['Desktop Safari'] } },
-      { name: 'mobile-chrome', use: { ...devices['Pixel 7'] } },
+      {
+        name: 'webkit',
+        testIgnore: /support\/auth\.setup\.ts/,
+        use: {
+          ...devices['Desktop Safari'],
+          storageState: './.auth/user.json',
+        },
+        dependencies: ['setup'],
+      },
+      {
+        name: 'mobile-chrome',
+        testIgnore: /support\/auth\.setup\.ts/,
+        use: {
+          ...devices['Pixel 7'],
+          storageState: './.auth/user.json',
+        },
+        dependencies: ['setup'],
+      },
     ]
   : [];
 
@@ -27,18 +42,12 @@ export default defineConfig({
     ['junit', { outputFile: 'test-results/junit.xml' }],
   ],
   use: {
-    baseURL: 'http://127.0.0.1:3100',
+    baseURL: 'https://the-internet.herokuapp.com',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'on-first-retry',
     locale: 'es-ES',
     timezoneId: 'Europe/Madrid',
-  },
-  webServer: {
-    command: 'node ./support/dev-server.js',
-    url: 'http://127.0.0.1:3100/health',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
   },
   globalSetup: require.resolve('./support/global-setup'),
   globalTeardown: require.resolve('./support/global-teardown'),
@@ -50,12 +59,22 @@ export default defineConfig({
     },
     {
       name: 'chromium',
+      testIgnore: /support\/auth\.setup\.ts/,
       use: {
         ...devices['Desktop Chrome'],
         storageState: './.auth/user.json',
       },
       dependencies: ['setup'],
     },
-    ...matrixProjects,
+    {
+      name: 'firefox',
+      testIgnore: /support\/auth\.setup\.ts/,
+      use: {
+        ...devices['Desktop Firefox'],
+        storageState: './.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
+    ...extraProjects,
   ],
 });

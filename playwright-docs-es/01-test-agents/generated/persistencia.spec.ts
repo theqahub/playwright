@@ -4,24 +4,14 @@
 
 import { test, expect } from '@playwright/test';
 
-test.describe('Gestión de Tareas', () => {
-  test('Verificar comportamiento tras recarga [PRIORIDAD: BAJA] [RIESGO: La aplicación real sí persiste datos en localStorage]', async ({ page }) => {
-    // 1. Navegar a https://demo.playwright.dev/todomvc/#/, agregar una tarea de prueba, y recargar la página
-    await page.goto('https://demo.playwright.dev/todomvc/#/');
-    const input = page.getByPlaceholder('What needs to be done?');
-    
-    await input.fill('Tarea persistencia');
-    await input.press('Enter');
-    await expect(page.locator('ul li').filter({ hasText: 'Tarea persistencia' })).toBeVisible();
+test.describe('Add/Remove Elements', () => {
+  test('Verificar comportamiento tras recarga [PRIORIDAD: BAJA] [RIESGO: La demo no persiste estado entre recargas]', async ({ page }) => {
+    await page.goto('/add_remove_elements/');
+    await page.getByRole('button', { name: 'Add Element' }).click();
+    await expect(page.getByRole('button', { name: 'Delete' })).toHaveCount(1);
 
-    // Recargar la página
     await page.reload();
-
-    // 2. Verificar que las tareas persisten después de la recarga
-    // La aplicación real de Playwright usa localStorage para persistencia
-    await expect(page.locator('ul li').filter({ hasText: 'Tarea persistencia' })).toBeVisible();
-
-    // 3. Verificar que el campo de texto está visible después de la recarga
-    await expect(input).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Delete' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Add Element' })).toBeVisible();
   });
 });

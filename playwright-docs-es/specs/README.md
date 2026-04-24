@@ -1,5 +1,5 @@
 # Specs
 
-Directorio para los planes Markdown generados por los agentes de Playwright.
+Directorio para planes Markdown generados por los agentes de Playwright.
 
-Ejecuta los agentes desde la raiz de `playwright-docs-es` para que las rutas relativas como `specs/plan.md` queden dentro de este laboratorio.
+En este laboratorio, los planes deben asumir que el AUT compartido es `https://the-internet.herokuapp.com/`, salvo que un apartado documente explicitamente otro destino.

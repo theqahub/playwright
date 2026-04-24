@@ -6,5 +6,5 @@ async function abrirYValidar(page: Page, path: string, title: RegExp) {
 }
 
 test('helper tipado en TypeScript', async ({ page }) => {
-  await abrirYValidar(page, '/', /Playwright Docs ES/);
+  await abrirYValidar(page, '/', /The Internet/);
 });

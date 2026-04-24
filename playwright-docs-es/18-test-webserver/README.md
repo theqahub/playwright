@@ -1,7 +1,11 @@
 # 18 - Web Server
 
 ## Objetivo
-Levantar automaticamente tu app antes de tests y apagarla al terminar.
+Levantar automaticamente tu app antes de los tests y apagarla al terminar.
+
+## Importante en este laboratorio
+
+La suite de `playwright-docs-es` ya no arranca una app propia porque toda la serie usa `https://the-internet.herokuapp.com/` como AUT comun. Aun asi, la caracteristica `webServer` sigue siendo clave cuando tu proyecto necesita iniciar frontend o backend antes de correr Playwright.
 
 ## Configuracion ejemplo
 ```ts
@@ -20,17 +24,6 @@ export default defineConfig({
 });
 ```
 
-## Campos importantes
-- `command`: comando para levantar app.
-- `url`: endpoint de salud esperado.
-- `reuseExistingServer`: reutiliza servidor local.
-- `timeout`: tiempo maximo para esperar arranque.
+## Como encaja aqui
 
-## Buenas practicas
-- Usar endpoint fiable de readiness.
-- Aumentar timeout solo si el build lo requiere.
-- Evitar puertos aleatorios no controlados.
-
-## Checklist
-- [ ] Tests esperan a servidor listo.
-- [ ] Config local y CI coherente.
+En esta serie el ejemplo ejecutable del apartado valida disponibilidad de una web remota. Si quisieras volver a una app local, este seria el mecanismo correcto para integrarla con Playwright sin arrancarla a mano.

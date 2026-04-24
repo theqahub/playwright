@@ -6,12 +6,12 @@ type DemoFixtures = {
 
 export const test = base.extend<DemoFixtures>({
   authenticatedPage: async ({ page }, use) => {
-    // Fixture reusable: deja la pagina autenticada para tests.
     await page.goto('/login');
-    await page.getByLabel('Email').fill('qa@example.com');
-    await page.getByLabel('Password').fill('secret');
-    await page.getByRole('button', { name: 'Entrar' }).click();
-    await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+    await page.getByLabel('Username').fill('tomsmith');
+    await page.getByLabel('Password').fill('SuperSecretPassword!');
+    await page.getByRole('button', { name: 'Login' }).click();
+    await expect(page).toHaveURL(/\/secure/);
+    await expect(page.getByRole('heading', { name: 'Secure Area', exact: true })).toBeVisible();
 
     await use(page);
 

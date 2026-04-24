@@ -1,14 +1,15 @@
 import { test, expect } from '@playwright/test';
 
-const roles = [
-  { role: 'admin', path: '/admin' },
-  { role: 'editor', path: '/editor' },
-  { role: 'viewer', path: '/viewer' },
+const statusCodes = [
+  { code: '200', path: '/status_codes/200' },
+  { code: '301', path: '/status_codes/301' },
+  { code: '404', path: '/status_codes/404' },
+  { code: '500', path: '/status_codes/500' },
 ];
 
-for (const item of roles) {
-  test(`acceso correcto para rol ${item.role}`, async ({ page }) => {
+for (const item of statusCodes) {
+  test(`status code ${item.code} visible`, async ({ page }) => {
     await page.goto(item.path);
-    await expect(page.getByRole('heading', { name: item.role })).toBeVisible();
+    await expect(page.locator('#content')).toContainText(item.code);
   });
 }

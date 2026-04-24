@@ -6,12 +6,30 @@ test.use({
 });
 
 test('geolocalizacion simulada en Madrid', async ({ page }) => {
-  await page.goto('/tiendas');
-  await expect(page.getByText('Madrid')).toBeVisible();
+  await page.goto('/geolocation');
+
+  const coords = await page.evaluate(
+    () =>
+      new Promise<{ latitude: number; longitude: number }>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          position =>
+            resolve({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            }),
+          error => reject(new Error(error.message)),
+        );
+      }),
+  );
+
+  expect(coords.latitude).toBeCloseTo(40.4168, 3);
+  expect(coords.longitude).toBeCloseTo(-3.7038, 3);
 });
 
 test('emulacion de color scheme por test', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'dark' });
-  await page.setContent('<main id="app">Modo oscuro</main>');
-  await expect(page.locator('#app')).toHaveText('Modo oscuro');
+  await page.goto('/');
+  await expect
+    .poll(() => page.evaluate(() => window.matchMedia('(prefers-color-scheme: dark)').matches))
+    .toBe(true);
 });

@@ -1,50 +1,30 @@
 # 08 - Global Setup and Teardown
 
 ## Cuando usarlo
-Para tareas una vez por corrida:
+Para tareas que se hacen una vez por corrida:
 - preparar datos globales,
 - autenticacion compartida,
 - semilla de entorno,
 - limpieza final.
 
-## Opcion recomendada moderna
-Usar `project dependencies` cuando sea posible para mayor trazabilidad.
+## Nota para este repo
 
-## Ejemplo clasico con setup global
+Este laboratorio ya no depende de una app local. La autenticacion compartida se muestra con `project dependencies` y `storageState` sobre `the-internet.herokuapp.com`, mientras que `globalSetup` y `globalTeardown` siguen disponibles para preparar entorno global del runner.
+
+## Ejemplo clasico
 ```ts
-// playwright.config.ts
-import { defineConfig } from '@playwright/test';
-
-export default defineConfig({
-  globalSetup: require.resolve('./global-setup'),
-});
-```
-
-```ts
-// global-setup.ts
 import { chromium } from '@playwright/test';
 
 async function globalSetup() {
   const browser = await chromium.launch();
-  const page = await browser.newPage();
+  const page = await browser.newPage({ baseURL: 'https://the-internet.herokuapp.com' });
 
-  // Login una vez y guardar estado para reutilizarlo
-  await page.goto('http://localhost:3000/login');
-  await page.fill('[name=email]', 'qa@example.com');
-  await page.fill('[name=password]', 'secret');
-  await page.click('button[type=submit]');
-  await page.context().storageState({ path: 'playwright/.auth/user.json' });
+  await page.goto('/login');
+  await page.getByLabel('Username').fill('tomsmith');
+  await page.getByLabel('Password').fill('SuperSecretPassword!');
+  await page.getByRole('button', { name: 'Login' }).click();
+  await page.context().storageState({ path: './.auth/user.json' });
 
   await browser.close();
 }
-
-export default globalSetup;
 ```
-
-## Buenas practicas
-- Hacer setup idempotente.
-- Evitar dependencias fragiles con servicios externos.
-
-## Checklist
-- [ ] Setup global rapido y estable.
-- [ ] Estado reutilizable versionado correctamente.

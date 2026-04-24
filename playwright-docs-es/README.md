@@ -1,8 +1,16 @@
 # Playwright Docs en Espanol (Guia de estudio + laboratorio ejecutable)
 
-Este directorio ahora contiene dos cosas:
-1. Material teorico en espanol (README por apartado).
-2. Laboratorio de tests ejecutables para grabar la serie sin preparar escenarios extra.
+Este directorio combina teoria en espanol y ejemplos ejecutables inspirados en la documentacion oficial de Playwright.
+
+## Aplicacion base del laboratorio
+
+Todo el laboratorio usa `https://the-internet.herokuapp.com/` como aplicacion de referencia.
+
+La razon del cambio es simple:
+- es una web publica, conocida y estable para practicar automatizacion,
+- evita mantener una app local artificial solo para las demos,
+- tiene paginas muy utiles para mostrar conceptos como login, dropdowns, checkboxes, dynamic loading y status codes,
+- hace que todas las pildoras trabajen sobre un mismo AUT reconocible.
 
 ## Inicio rapido
 
@@ -22,38 +30,34 @@ npm run test:ui
 # Terminal normal
 npm run test
 
-# Solo un apartado (ejemplo)
+# Solo un apartado
 npx playwright test 06-emulation
 
 # Depuracion paso a paso
 npm run test:debug
+
+# Abrir codegen contra la web de referencia
+npm run pw:codegen
 ```
 
-## Matriz de proyectos (opcional)
+## Matriz de proyectos
 
-Por defecto se ejecuta en `chromium` para que sea rapido y estable durante grabacion.
+Por defecto se ejecuta en `chromium` y `firefox`, para que los ejemplos condicionales por navegador tengan sentido visual sin hacer la suite demasiado lenta.
 
-Si quieres matriz completa:
+Si quieres ampliar cobertura:
 
 ```bash
 npm run test:projects
 ```
 
-Esto activa `firefox`, `webkit` y `mobile-chrome`.
-
-## Sharding (opcional CI/demo)
-
-```bash
-npm run test:shard:1
-npm run test:shard:2
-```
+Esto activa ademas `webkit` y `mobile-chrome`.
 
 ## Estructura tecnica del laboratorio
 
-- `playwright.config.ts`: configuracion central (reporters, proyectos, retries, webServer, global setup/teardown).
-- `support/dev-server.js`: app local minima para evitar dependencias externas.
-- `support/auth.setup.ts`: genera `storageState` para ejemplos de auth.
-- `support/fixtures.ts`: fixture reutilizable en espanol para tests de ejemplo.
+- `playwright.config.ts`: configuracion central del runner.
+- `support/auth.setup.ts`: login en `the-internet` y generacion de `storageState`.
+- `support/fixtures.ts`: fixtures compartidas sobre la misma web.
+- `support/global-setup.ts` y `support/global-teardown.ts`: hooks globales del laboratorio.
 
 ## Mapa de apartados y archivos ejecutables
 
@@ -76,7 +80,11 @@ npm run test:shard:2
 - `17-test-ui-mode/ui-mode.spec.ts`
 - `18-test-webserver/webserver.spec.ts`
 
-## Ruta recomendada de estudio para videos
+## Nota sobre `webServer`
+
+Este repositorio ya no levanta una app propia. La pildora `18-test-webserver` se mantiene porque el concepto sigue siendo importante, pero el ejemplo ejecutable del repo valida disponibilidad de una web remota y el README del apartado explica como seria la configuracion cuando tu app si necesite arranque local.
+
+## Ruta recomendada de estudio
 
 1. `04-test-configuration`
 2. `05-test-use-options`
@@ -97,6 +105,6 @@ npm run test:shard:2
 17. `17-test-ui-mode`
 18. `01-test-agents`
 
-## Fuentes oficiales
+## Fuente
 
-Basado en `https://playwright.dev/docs` (18 apartados de Playwright Test).
+Basado en `https://playwright.dev/docs` y aterrizado sobre `https://the-internet.herokuapp.com/` para tener ejemplos visuales y ejecutables coherentes entre si.

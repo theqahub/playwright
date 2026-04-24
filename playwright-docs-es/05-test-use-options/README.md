@@ -1,7 +1,7 @@
 # 05 - Test Use Options
 
 ## Que controla `use`
-Define opciones por defecto para `page/context`:
+Define opciones por defecto para `page` y `browserContext`:
 - `baseURL`
 - `headless`
 - `viewport`
@@ -10,15 +10,17 @@ Define opciones por defecto para `page/context`:
 - `permissions`
 - `trace`, `video`, `screenshot`
 
+## En este laboratorio
+
+`use.baseURL` apunta a `https://the-internet.herokuapp.com/`, de modo que un `page.goto('/login')` o `page.goto('/dynamic_loading/2')` funciona sin repetir la URL completa en cada test.
+
 ## Ejemplo de configuracion
 ```ts
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   use: {
-    baseURL: 'http://localhost:4173',
-    headless: true,
-    viewport: { width: 1366, height: 768 },
+    baseURL: 'https://the-internet.herokuapp.com',
     locale: 'es-ES',
     timezoneId: 'Europe/Madrid',
     trace: 'retain-on-failure',
@@ -35,14 +37,6 @@ import { test } from '@playwright/test';
 test.use({ locale: 'en-US' });
 
 test('flujo en ingles', async ({ page }) => {
-  // Este test ignora locale global y usa en-US
+  await page.goto('/');
 });
 ```
-
-## Buenas practicas
-- Definir defaults realistas de usuario.
-- Cambiar opciones por `describe`/archivo cuando aplique.
-
-## Checklist
-- [ ] `use` cubre idioma, viewport y trazas.
-- [ ] Hay estrategia clara para overrides.
